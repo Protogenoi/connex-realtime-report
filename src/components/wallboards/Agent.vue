@@ -17,7 +17,7 @@
                         <template v-if="props.item.campaign_id === '9996'">
                             <v-flex>
                                 <v-card>
-                                    <v-card-title :class="checkStatus(props.item.agentStatus, props.item.dead_epoch, props.item.lead_id, props.item.comments, props.item.campaign_id)"><h4>{{ props.item.full_name }} ({{ props.item.agentStatus }})</h4></v-card-title>
+                                    <v-card-title :class="setColour(props.item.agentStatus, props.item.dead_epoch, props.item.lead_id, props.item.comments, props.item.campaign_id, props.item.agentTime, props.item.agentTime2)"><h4>{{ props.item.full_name }} ({{ props.item.agentStatus }})</h4></v-card-title>
                                     <v-divider></v-divider>
                                     <v-list dense>
                                         <v-list-tile>
@@ -50,7 +50,7 @@
                     <tr>
                 <td>{{ props.item.full_name }}</td>
                 <td
-                        :class="checkStatus(props.item.agentStatus, props.item.dead_epoch, props.item.lead_id, props.item.comments, props.item.campaign_id)"
+                        :class="setColour(props.item.agentStatus, props.item.dead_epoch, props.item.lead_id, props.item.comments, props.item.campaign_id, props.item.agentTime, props.item.agentTime2)"
                         >
                    {{ checkStatus(props.item.agentStatus, props.item.dead_epoch, props.item.lead_id, props.item.comments, props.item.campaign_id)}}
                 </td>
@@ -146,6 +146,59 @@
                 return agentStatus;
 
             },
+            setColour: function(agentStatus, dead_epoch, lead_id, comments, campaign_id, agentTime, agentTime2) {
+
+                if (campaign_id === '9996') {
+
+                    switch (agentStatus) {
+                        case 'INCALL':
+                            if (dead_epoch != null) {
+                                agentStatus = 'DEAD'
+                            } else {
+                                agentStatus = 'CLOSERINCALL';
+                            }
+
+                            break;
+                        default:
+                            agentStatus = 'CLOSERREADY';
+                    }
+
+                } else {
+
+                    switch (agentStatus) {
+                        case 'READY':
+                            agentStatus = 'WAITING';
+                            break;
+                        case 'INCALL':
+                            if (agentTime < '00:00:98') {
+                                agentStatus = 'INCALL';
+                            } else if (agentTime >= '00:00:99' && agentTime < '00:02:99') {
+                            agentStatus = 'INCALLMED';
+                        } else if (agentTime >= '00:02:99') {
+                            agentStatus = 'INCALLLONG';
+                        }
+                            if (dead_epoch != null) {
+                                agentStatus = 'DEAD'
+                            }
+                            break;
+                        case 'PAUSED':
+                            if (agentTime2 < '00:00:98') {
+                                agentStatus = 'PAUSED';
+                            } else if (agentTime2 >= '00:00:99' && agentTime2 < '00:02:99') {
+                                agentStatus = 'PAUSEDMED';
+                            } else if (agentTime2 >= '00:02:99') {
+                                agentStatus = 'PAUSEDLONG';
+                            }
+                            if (lead_id > 0 && comments.length === 0) {
+                                agentStatus = 'DISPO'
+                            }
+                            break;
+                    }
+
+                }
+
+                return agentStatus;
+            },
             setCorrectTime: function (agentTime, agentTime2, agentStatus) {
 
                 let time;
@@ -164,10 +217,22 @@
 
 <style scoped>
     .PAUSED {
-        background-color: #fdff39;
+        background-color: #F0E68C;
+    }
+    .PAUSEDMED {
+        background-color: #FEFF00;
+    }
+    .PAUSEDLONG {
+        background-color: #808000;
     }
     .INCALL {
-        background-color: magenta;
+        background-color: #D8BFD8;
+    }
+    .INCALLMED {
+        background-color: #ED82EE;
+    }
+    .INCALLLONG {
+        background-color: #800080;
     }
     .QUEUE {
         background-color: cyan;
@@ -186,5 +251,8 @@
     }
     .CLOSERINCALL {
         background-color: red;
+    }
+    table.v-table tbody tr td {
+        font-weight: bold;
     }
 </style>
