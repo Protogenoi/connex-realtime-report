@@ -103,7 +103,7 @@
                         })
                         .catch(error => console.log(error))
 
-                },3000 )
+                },4000 )
         },
         methods: {
             checkStatus: function (agentStatus, dead_epoch, lead_id, comments, campaign_id)  {

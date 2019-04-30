@@ -1,5 +1,6 @@
 <template>
   <v-app id="inspire">
+
     <v-navigation-drawer
             v-model="drawer"
             fixed
@@ -23,12 +24,23 @@
             <v-list-tile-title>Agent Wallboard</v-list-tile-title>
           </v-list-tile-content>
         </v-list-tile>
+
+        <v-list-tile @click="selectedComponent = 'appCloser'">
+          <v-list-tile-action>
+            <v-icon>contact_mail</v-icon>
+          </v-list-tile-action>
+          <v-list-tile-content>
+            <v-list-tile-title>Closer Commissions</v-list-tile-title>
+          </v-list-tile-content>
+        </v-list-tile>
+
       </v-list>
     </v-navigation-drawer>
     <v-toolbar color="indigo" dark fixed app>
       <v-toolbar-side-icon @click.stop="drawer = !drawer"></v-toolbar-side-icon>
       <v-toolbar-title>ADL</v-toolbar-title>
     </v-toolbar>
+
     <v-content>
       <v-container fluid fill-height>
 
@@ -46,6 +58,7 @@
 <script>
 
   import appAgent from '../components/wallboards/Agent'
+  import appCloser from '../views/Closers'
   import appFooter from '../views/Footer'
 
   export default {
@@ -59,7 +72,8 @@
     },
     components: {
       appAgent,
-        appFooter
+        appFooter,
+      appCloser
     }
   }
 </script>
