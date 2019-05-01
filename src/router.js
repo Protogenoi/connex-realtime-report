@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Home from './views/Home.vue'
+import Agent from './views/Agent'
+import Closers from './views/Closers'
 
 Vue.use(Router)
 
@@ -10,9 +12,19 @@ export default new Router({
   routes: [
     {
       path: '/',
-      name: 'home',
+      name: 'Home',
       component: Home
     },
+      {
+          path: '/Agent',
+          name: 'Agent',
+          component: Agent
+      },
+      {
+          path: '/Closers',
+          name: 'Closers',
+          component: Closers
+      },
     {
       path: '/about',
       name: 'about',
