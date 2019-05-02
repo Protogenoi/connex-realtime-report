@@ -1,5 +1,15 @@
 <template>
-  <h1>Home</h1>
+  <v-container>
+    <v-layout>
+      <v-flex xs6>
+      <h1>Box 1</h1>
+      </v-flex>
+      <v-flex xs6>
+      <h1>Box 2</h1>
+      </v-flex>
+    </v-layout>
+  </v-container>
+
 </template>
 
 <script>
